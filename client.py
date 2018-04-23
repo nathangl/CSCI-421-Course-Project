@@ -52,13 +52,8 @@ class ClientListener(threading.Thread):
 
         Button(root, width=20, text ="send", command = sendMessage).grid(row=1, column=0, columnspan = 3)
 
-        scrollbar = Scrollbar(root)
-        scrollbar.pack(side = RIGHT, fill = Y)
-
-        output = Label(root, text = "", width = 20, height = 20, background="white", fg = 'blue', yscrollcommand = scrollbar.set)
+        output = Label(root, text = "", width = 20, height = 20, background="white", fg = 'blue')
         output.grid(row=2, column=0, columnspan = 3)
-        output.pack(SIDE = LEFT, fill = BOTH)
-        scrollbar.config(command = output.yview)
 
         listen()
 
