@@ -1,6 +1,8 @@
 import os, sys, time, threading
 from Tkinter import *
 from socket import *
+from CaesarcipherEncrypt import *
+from CaesarcipherDecrypt import *
 
 host = "127.0.0.1"
 if(len(sys.argv) < 3) :
@@ -38,6 +40,7 @@ class ClientListener(threading.Thread):
             temp = inputBox.get()
             output['text'] = output['text'] + "Client 1: " + temp + "\n"
             inputBox.delete(0, END)
+            temp = getTranslatedMessage(temp, 5)
             UDPSock.sendto(temp, addrSend)
 
             '''
@@ -56,6 +59,7 @@ class ClientListener(threading.Thread):
             global messageReceived
             global messageData
             if messageReceived == True:
+                messageData = getTranslatedMessage(messageData, 5)
                 output['text'] = output['text'] + "Client 2: " + messageData + "\n"
                 messageReceived = False
             root.after(500, listen)
@@ -102,6 +106,7 @@ class Gui(threading.Thread):
             temp = inputBox.get()
             output['text'] = output['text'] + "Client 1: " + temp + "\n"
             inputBox.delete(0, END)
+
             UDPSock.sendto(temp, addrSend)
             print 'sent'
 

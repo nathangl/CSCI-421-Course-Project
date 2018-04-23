@@ -13,9 +13,9 @@ def getTranslatedMessage(message, key):
     for letter in message:
         #True for encryption
         translated += shift(letter, key, True)
-        
-    return translated
 
+    return translated
+'''
 #gets input from commmand line
 line = input()
 
@@ -31,7 +31,8 @@ if key > Maximum_KeySize:
     key = key % Maximum_KeySize
     if key == 0:
         key += 1
-    
+
 #returns encrypted text
 encryptedText =  getTranslatedMessage(text, key)
 print encryptedText
+'''
