@@ -7,7 +7,7 @@ alphabet = string.ascii_uppercase
 
 Maximum_KeySize = len(alphabet)
 
-def getTranslatedMessage(message, key):
+def getDecryptedMessage(message, key):
     translated = ''
     #for each char letter in string message
     for letter in message:
