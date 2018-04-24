@@ -1,12 +1,12 @@
 #Callum Walsh
 #Vigenere Encryption and decryption.
 import sys
-
+'''
 # Did they give me a key?
-if len(sys.argv) <= 1: 
+if len(sys.argv) <= 1:
   print "I need a key"
   sys.exit(1)
-  
+
 #print sys.argv
 
 #key = int(sys.argv[2])#stores key in approriate array.
@@ -22,18 +22,19 @@ text = ""
 #line 19 how many can be in the array
 if len(sys.argv) == 2:
   # Just a key given, need to get info from stdin
-  
+
   text = sys.stdin.read()
-  
+
   #Line 23 text = ..... stores the word provided on the command line
-  
+
 else:
   # filename given, read from the given file
   file = open(sys.argv[2])
   text = file.read()
-  
+
   file.close()
-  
+'''
+
 curkey = ord(key[0]) - ord('a') + 1
 
 for i in range(len(text)):
@@ -51,6 +52,3 @@ for i in range(len(text)):
      curkey = ord(key[(i+1) % len(key)]) - ord('a') + 1
    else:
      sys.stdout.write( text[i] )
-    
-    
-  

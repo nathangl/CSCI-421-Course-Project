@@ -1,5 +1,5 @@
 #Nathaniel Law
-#P01 Playfair encryption
+#P01 Playfair decryption
 import sys
 from keylib import *
 
@@ -10,7 +10,7 @@ text = line[1]
 key = playKey(key)
 matrix = playMatrix(key)
 pairs = playPairs(text)
-encrypt = playEncrypt(matrix, pairs)
+encrypt = playDecrypt(matrix, pairs)
 
 finalText = ''
 for pair in encrypt:
