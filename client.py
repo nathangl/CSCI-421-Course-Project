@@ -5,6 +5,8 @@ from CaesarcipherEncrypt import *
 from CaesarcipherDecrypt import *
 from keylibrary import *
 from keylib import *
+from VignereEncrypt import *
+from VignereDecrypt import *
 
 host = "127.0.0.1"
 if(len(sys.argv) < 3) :
@@ -36,19 +38,18 @@ class ClientListener(threading.Thread):
 
         def encrypt(text):
             global encryptionMethod
-            print encryptionMethod
+            key = keyBox.get()
+            print key
             if encryptionMethod == "Caesar":
-                key = 5
-                return getEncryptedCaesarMessage(text, key)
+                return getEncryptedCaesarMessage(text, int(key))
             elif encryptionMethod == "Mono":
                 key = 'BCDEFGHIJKLMNOPQRSTUVWXYZA'
                 key.lower()
                 #inverse = inverse_monoalpha_cipher(text)
                 return encrypt_with_monoalpha(text, key)
             elif encryptionMethod == "Vignere":
-                key = 'bob'
+                return getEncryptedVignereMessage(text, key)
             elif encryptionMethod == "Playfair":
-                key = 'GoHounds'
                 key = playKey(key)
                 matrix = playMatrix(key)
                 pairs = playPairs(text)
@@ -63,19 +64,17 @@ class ClientListener(threading.Thread):
         #DECRYPTION METHOD
         def decrypt(text):
             global encryptionMethod
-            print encryptionMethod
+            key = keyBox.get()
             if encryptionMethod == "Caesar":
-                key = 5
-                return getDecryptedCaesarMessage(text, key)
+                return getDecryptedCaesarMessage(text, int(key))
             elif encryptionMethod == "Mono":
                 key = 'BCDEFGHIJKLMNOPQRSTUVWXYZA'
                 key.lower()
                 inverse = inverse_monoalpha_cipher(text)
                 return encrypt_with_monoalpha(inverse, key)
             elif encryptionMethod == "Vignere":
-                key = 'bob'
+                return getDecryptedVignereMessage(text, key)
             elif encryptionMethod == "Playfair":
-                key = 'GoHounds'
                 key = playKey(key)
                 matrix = playMatrix(key)
                 pairs = playPairs(text)
