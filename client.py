@@ -103,6 +103,9 @@ class ClientListener(threading.Thread):
             global messageReceived
             global messageData
             if messageReceived == True:
+                global encryptionMethod
+                print encryptionMethod
+                print messageData
                 text = decrypt(messageData)
                 output.insert(INSERT, str("Client 2: " + text + "\n"))
                 #output['text'] = output['text'] + "Client 2: " + messageData + "\n"
