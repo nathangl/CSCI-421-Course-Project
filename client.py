@@ -47,10 +47,8 @@ class ClientListener(threading.Thread):
             if encryptionMethod == "Caesar":
                 return getEncryptedCaesarMessage(text, int(key))
             elif encryptionMethod == "Mono":
-                key = 'BCDEFGHIJKLMNOPQRSTUVWXYZA'
-                key.lower()
-                #inverse = inverse_monoalpha_cipher(text)
-                return encrypt_with_monoalpha(text, key)
+                #not currently working
+                return text
             elif encryptionMethod == "Vignere":
                 return getEncryptedVignereMessage(text, key)
             elif encryptionMethod == "Playfair":
@@ -63,10 +61,8 @@ class ClientListener(threading.Thread):
             if encryptionMethod == "Caesar":
                 return getDecryptedCaesarMessage(text, int(key))
             elif encryptionMethod == "Mono":
-                key = 'BCDEFGHIJKLMNOPQRSTUVWXYZA'
-                key.lower()
-                inverse = inverse_monoalpha_cipher(text)
-                return encrypt_with_monoalpha(inverse, key)
+                #not currently working
+                return text
             elif encryptionMethod == "Vignere":
                 return getDecryptedVignereMessage(text, key)
             elif encryptionMethod == "Playfair":
@@ -93,7 +89,6 @@ class ClientListener(threading.Thread):
                 global encryptionMethod
                 text = decrypt(messageData)
                 output.insert(INSERT, str("Client 2: " + text + "\n"))
-                #output['text'] = output['text'] + "Client 2: " + messageData + "\n"
                 messageReceived = False
             root.after(500, listen)
 
