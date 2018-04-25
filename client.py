@@ -1,14 +1,15 @@
-import os, sys, time, threading
+#client.py
+#client to client chat program encrypted with ciphers from class
+#Group 4: Nathaniel Law, Anca-Maria Murgoci, Damilola Olakunle, Callum Walsh
+
+import os, sys, time, threading, random, string
 from Tkinter import *
 from socket import *
-from CaesarcipherEncrypt import *
-from CaesarcipherDecrypt import *
-from keylibrary import *
-from keylib import *
-from VignereEncrypt import *
-from VignereDecrypt import *
+from cipherlib import *
 
 host = "127.0.0.1"
+
+#check for arguments
 if(len(sys.argv) < 3) :
     print "Enter: python client.py listenport sendport"
     sys.exit()
@@ -23,9 +24,12 @@ addrListen = (host,listenPort)
 UDPSock = socket(AF_INET, SOCK_DGRAM)
 UDPSock.bind(addrListen)
 
+#vars for received data
 messageReceived = False
 messageData = 'default'
-encryptionMethod = 'default'
+
+#set by chosen button, defaults to Caesar
+encryptionMethod = 'Caesar'
 
 class ClientListener(threading.Thread):
     def __init__(self, root):
@@ -36,10 +40,10 @@ class ClientListener(threading.Thread):
         root.title("Encrypted Chat")
         root.geometry("350x500")
 
+        #ENCRYPTION METHOD
         def encrypt(text):
             global encryptionMethod
             key = keyBox.get()
-            print key
             if encryptionMethod == "Caesar":
                 return getEncryptedCaesarMessage(text, int(key))
             elif encryptionMethod == "Mono":
@@ -50,16 +54,7 @@ class ClientListener(threading.Thread):
             elif encryptionMethod == "Vignere":
                 return getEncryptedVignereMessage(text, key)
             elif encryptionMethod == "Playfair":
-                key = playKey(key)
-                matrix = playMatrix(key)
-                pairs = playPairs(text)
-                encrypt = playEncrypt(matrix, pairs)
-
-                finalText = ''
-                for pair in encrypt:
-                    finalText += pair + ' '
-
-                return finalText
+                return getEncryptedPlayfairMessage(text, key)
 
         #DECRYPTION METHOD
         def decrypt(text):
@@ -75,36 +70,27 @@ class ClientListener(threading.Thread):
             elif encryptionMethod == "Vignere":
                 return getDecryptedVignereMessage(text, key)
             elif encryptionMethod == "Playfair":
-                key = playKey(key)
-                matrix = playMatrix(key)
-                pairs = playPairs(text)
-                encrypt = playDecrypt(matrix, pairs)
+                return getDecryptedPlayfairMessage(text, key)
 
-                finalText = ''
-                for pair in encrypt:
-                    finalText += pair + ' '
-
-                return finalText
-
+        #sends message from inputbox to other client
         def sendMessage():
             temp = inputBox.get()
             output.insert(INSERT, "Client 1: " + temp + "\n")
-            #output['text'] = output['text'] + "Client 1: " + temp + "\n"
             inputBox.delete(0, END)
             temp = encrypt(temp)
             UDPSock.sendto(temp, addrSend)
 
+        #defines encrypt method from chosen button
         def setEncrypt(method):
             global encryptionMethod
             encryptionMethod = method
 
+        #checks for if a message was received, prints message if found
         def listen():
             global messageReceived
             global messageData
             if messageReceived == True:
                 global encryptionMethod
-                print encryptionMethod
-                print messageData
                 text = decrypt(messageData)
                 output.insert(INSERT, str("Client 2: " + text + "\n"))
                 #output['text'] = output['text'] + "Client 2: " + messageData + "\n"
@@ -143,7 +129,7 @@ class ClientListener(threading.Thread):
         Button(root, width=5, text ="Playfair", command= lambda: setEncrypt("Playfair")).grid(row=1, column=4, columnspan = 1)
 
         #Output / Chat History
-        output = Text(root, width = 20, height = 20, background="white", fg = 'blue')
+        output = Text(root, width = 30, height = 20, background="white", fg = 'blue')
         output.grid(row=2, column=1, columnspan = 3)
 
         listen()
