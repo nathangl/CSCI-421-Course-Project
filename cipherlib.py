@@ -1,3 +1,6 @@
+#cipherlib.py
+#Group 4: Nathaniel Law, Anca-Maria Murgoci, Damilola Olakunle, Callum Walsh
+
 import string
 import sys
 
